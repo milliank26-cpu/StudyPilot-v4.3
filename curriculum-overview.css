@@ -1,0 +1,32 @@
+/* Curriculum overview: additive UI built on the existing concept/session records. */
+.curriculum-overview{margin:0 0 16px}.curriculum-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:16px}.curriculum-summary>div{background:#fff;border:1px solid var(--line);border-radius:13px;padding:13px 15px}.curriculum-summary strong{display:block;font:800 23px 'Manrope';margin-top:4px}.curriculum-overview-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:8px 0 12px}.curriculum-overview-heading h2{margin:0}.curriculum-overview-heading p{margin:3px 0 0;color:var(--muted);font-size:11px}.curriculum-subject-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.curriculum-subject-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:15px;min-width:0}.curriculum-subject-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:10px}.curriculum-subject-head strong{display:block;font-size:14px}.curriculum-subject-head small,.curriculum-subject-foot{color:var(--muted);font-size:10px}.curriculum-percent{font:800 20px 'Manrope';color:var(--blue)}.curriculum-subject-foot{display:flex;justify-content:space-between;gap:8px;margin-top:7px}.curriculum-topic-list{margin:12px 0;border-top:1px solid #edf0f5}.curriculum-topic{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid #f1f3f7;font-size:11px}.curriculum-topic small{color:var(--muted);white-space:nowrap}.curriculum-subject-card>.mini-btn{margin-top:2px}
+@media(max-width:720px){.curriculum-summary{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.curriculum-summary>div{padding:11px}.curriculum-summary strong{font-size:20px}.curriculum-subject-grid{grid-template-columns:1fr}.curriculum-overview-heading{align-items:flex-start}.curriculum-subject-foot{flex-wrap:wrap}}
+
+/* Curriculum topic explorer v2 */
+.curriculum-subject-card>.mini-btn{margin-top:12px}
+.curriculum-explorer{margin-top:16px;padding:17px;background:#fff;border:1px solid var(--line);border-radius:16px}
+.curriculum-explorer-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:13px}
+.curriculum-explorer-heading h3{margin:2px 0;font:800 18px 'Manrope'}
+.curriculum-explorer-heading p{margin:3px 0 0;color:var(--muted);font-size:11px}
+.curriculum-topic-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.curriculum-topic-card{display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:left;padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);cursor:pointer;min-width:0}
+.curriculum-topic-card:hover,.curriculum-topic-card.is-selected{border-color:var(--blue);background:#f5f9ff}
+.curriculum-topic-card>span:first-child{min-width:0}.curriculum-topic-card strong,.curriculum-topic-card small{display:block}.curriculum-topic-card strong{font-size:12px}.curriculum-topic-card small{margin-top:4px;color:var(--muted);font-size:10px}
+.curriculum-topic-progress{font-weight:800;font-size:13px;white-space:nowrap;color:var(--blue);text-align:right}.curriculum-topic-progress small{font-weight:500}
+.curriculum-objectives-panel{margin-top:17px;padding-top:16px;border-top:1px solid var(--line)}
+.curriculum-subtopic-group{margin:12px 0}.curriculum-subtopic-group h4{margin:0 0 8px;font-size:12px;color:var(--muted)}
+.curriculum-objective{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid #edf0f5}
+.curriculum-objective-main{display:grid;gap:4px;min-width:0}.curriculum-objective-main strong{font-size:12px}.curriculum-objective-main>small{font-size:10px;color:var(--muted)}.curriculum-objective-main .pill{width:max-content}
+.curriculum-objective-actions{display:flex;gap:6px;flex-shrink:0}
+@media(max-width:720px){.curriculum-topic-grid{grid-template-columns:1fr}.curriculum-explorer{padding:13px}.curriculum-explorer-heading{align-items:flex-start;flex-wrap:wrap}.curriculum-objective{align-items:flex-start;flex-direction:column}.curriculum-objective-actions{width:100%}.curriculum-objective-actions .mini-btn{flex:1}}
+
+/* Curriculum builder v3 */
+.curriculum-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+#topicBuilderDialog{width:min(620px,calc(100vw - 28px));max-height:min(88vh,820px);overflow:auto;border:1px solid var(--line);border-radius:18px;padding:22px;background:#fff;color:var(--ink);box-shadow:0 24px 80px #15233b33}
+#topicBuilderDialog::backdrop{background:#10182888;backdrop-filter:blur(3px)}
+#topicBuilderForm{display:grid;gap:13px}
+#topicBuilderForm>label{display:grid;gap:6px;font-size:12px;font-weight:700}
+#topicBuilderForm input,#topicBuilderForm textarea{width:100%;min-width:0}
+#topicBuilderForm textarea{resize:vertical}
+#topicBuilderForm .muted{font-size:11px;font-weight:400}
+@media(max-width:560px){.curriculum-tools{width:100%}.curriculum-tools button{flex:1}#topicBuilderDialog{padding:16px}.curriculum-tools .btn{font-size:11px;padding:9px 10px}}

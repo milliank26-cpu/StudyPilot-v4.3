@@ -1,0 +1,30 @@
+STUDYPILOT V4.0 DEPLOYMENT CHECKLIST
+
+DO NOT start on the live site until you have a backup.
+
+SUPABASE DATABASE
+[ ] Back up the current database.
+[ ] Confirm V3 supabase-setup.sql already ran and studypilot_user_data exists.
+[ ] Run StudyPilot_V4_0_Complete_Migration.sql in SQL Editor.
+[ ] Create/sign in to your intended administrator account.
+[ ] Copy that account's Auth user UUID.
+[ ] Insert the UUID into public.studypilot_admins using the SQL in README_V4_Complete.md.
+
+HOSTING
+[ ] Back up/download current V3 website files.
+[ ] Upload all files in this package to the same site root.
+[ ] Edit config.js with the Supabase Project URL and public publishable/anon key.
+[ ] Never place the service_role/secret key in website files.
+[ ] Open /index.html and /admin.html.
+
+TESTING
+[ ] Student sign-in and sign-out.
+[ ] Admin sign-in works only for the allow-listed account.
+[ ] Admin overview and student account list load.
+[ ] Import a small test curriculum CSV.
+[ ] Publish a test subject.
+[ ] Student selects the published subject and sees its concepts in the planner.
+[ ] Existing V3 concepts, sessions and account data remain present.
+[ ] Feedback and support reports submit and appear in admin.
+[ ] Test mobile layout.
+[ ] Only after all checks pass, replace the live V3 site.

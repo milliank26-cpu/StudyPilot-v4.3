@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101827"><title>StudyPilot · Administration</title>
+<link rel="stylesheet" href="admin.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script defer src="admin.js"></script>
+</head>
+<body>
+<header class="topbar"><a class="brand" href="index.html"><span class="brand-mark">SP</span><span>StudyPilot <small>ADMINISTRATION</small></span></a><div class="top-actions"><span id="adminIdentity">Not signed in</span><button id="signOutBtn" class="quiet" hidden>Sign out</button><a class="quiet link" href="index.html">Student site ↗</a></div></header>
+<main class="shell">
+<section id="loginPanel" class="login-card">
+  <div class="eyebrow">SECURE ADMIN ACCESS</div><h1>Administrator sign in</h1>
+  <p>Use the account that has been explicitly authorised as a StudyPilot administrator.</p>
+  <form id="loginForm"><label>Email<input id="email" type="email" autocomplete="username" required></label><label>Password<input id="password" type="password" autocomplete="current-password" required></label><button class="primary" type="submit">Sign in</button></form>
+  <p id="loginMessage" class="message" role="status"></p>
+</section>
+<section id="adminApp" hidden>
+  <div class="welcome"><div><div class="eyebrow">PLATFORM CONTROL CENTRE</div><h1>StudyPilot overview</h1><p>Monitor platform activity and manage the shared curriculum.</p></div><span class="secure-tag">● Admin session verified</span></div>
+  <nav class="tabs" aria-label="Admin sections">
+    <button class="tab active" data-tab="overview">Overview</button><button class="tab" data-tab="curriculum">Curriculum</button><button class="tab" data-tab="bulk">Bulk upload</button><button class="tab" data-tab="suggestions">Concept suggestions</button><button class="tab" data-tab="notices">StudyPilot Noticeboard</button><button class="tab" data-tab="users">Students</button><button class="tab" data-tab="feedback">Feedback</button><button class="tab" data-tab="support">Support reports</button><button class="tab" data-tab="resources">Resources</button><button class="tab" data-tab="audit">Audit log</button>
+  </nav>
+  <section class="panel active" id="panel-overview"><div class="section-head"><div><h2>Platform activity</h2><p>Aggregated metrics from StudyPilot accounts and planner records.</p></div><button id="refreshOverview" class="secondary">Refresh</button></div><div id="metricGrid" class="metrics"><div class="metric"><span>Loading dashboard…</span></div></div><div class="notice">Completed study sessions are session counts from private planner records, not unique concepts mastered. Subject and curriculum totals reflect the published official curriculum.</div></section>
+  <section class="panel" id="panel-curriculum">
+    <div class="section-head"><div><h2>Curriculum management</h2><p>Organise the official curriculum by academic level, subject, topic, subtopic and concept.</p></div></div>
+    <div class="card">
+      <h3>Choose academic level and subject</h3>
+      <div class="import-row">
+        <label>Academic level<select id="manageLevel"><option value="O Level">O Level</option><option value="A Level">A Level</option></select></label>
+        <label>Subject<select id="manageSubject"><option value="">Choose a subject</option></select></label>
+        <button id="refreshCurriculum" class="secondary" type="button">Refresh</button>
+      </div>
+      <form id="addSubjectForm" class="import-row"><label>New subject<input id="newSubjectName" required maxlength="100" placeholder="e.g. Biology"></label><button class="primary" type="submit">Add subject</button></form>
+      <div id="subjectList" class="table-wrap">Loading subjects…</div><div id="curriculumTree" class="stack">Choose a subject to view its curriculum.</div>
+    </div>
+    <div class="card">
+      <h3>Add a concept manually</h3>
+      <p>Choose the subject above, then provide the hierarchy. Existing matching topics and subtopics are reused.</p>
+      <form id="manualConceptForm" class="form-grid">
+        <label>Topic<input id="manualTopic" required maxlength="180"></label>
+        <label>Subtopic<input id="manualSubtopic" required maxlength="180"></label>
+        <label>Concept<input id="manualConcept" required maxlength="240"></label>
+        <label>Description (optional)<input id="manualDescription" maxlength="1000"></label>
+        <button class="primary" type="submit">Save concept</button>
+      </form><p id="manualConceptMessage" class="message"></p>
+    </div>
+  </section>
+  <section class="panel" id="panel-bulk">
+    <div class="section-head"><div><h2>Bulk curriculum upload</h2><p>Choose the academic level and subject first. Your CSV only needs Topic, Subtopic and Concept columns.</p></div></div>
+    <div class="card">
+      <div class="import-row">
+        <label>Academic level<select id="bulkLevel"><option value="O Level">O Level</option><option value="A Level">A Level</option></select></label>
+        <label>Subject<select id="bulkSubject"><option value="">Choose a subject</option></select></label>
+        <label class="file-label">CSV file<input id="curriculumFile" type="file" accept=".csv,text/csv"></label>
+      </div>
+      <p class="muted">Required headers: <code>Topic,Subtopic,Concept</code>. Optional: Description, Difficulty, Importance, LearnMinutes, ReviewMinutes, PracticeMinutes, TargetRepetitions, TargetQuestions.</p>
+      <div class="upload-actions">
+        <button id="previewCsv" class="secondary" type="button">1. Preview &amp; validate</button>
+        <button id="uploadCurriculum" class="primary" type="button" disabled>2. Upload curriculum</button>
+      </div>
+      <p id="uploadStatus" class="message" role="status">Select a level, subject and CSV, then preview it. Upload will unlock after validation.</p>
+      <div id="csvPreview" class="stack" aria-live="polite"></div><p id="importMessage" class="message" role="status"></p>
+    </div>
+  </section>
+  <section class="panel" id="panel-suggestions">
+    <div class="section-head"><div><h2>Concept suggestions</h2><p>Review student-submitted concepts before adding them to the official curriculum.</p></div><button id="loadSuggestions" class="secondary">Refresh</button></div>
+    <div id="suggestionsList" class="stack">Load suggestions.</div>
+  </section>
+  <section class="panel" id="panel-notices">
+    <div class="section-head"><div><h2>StudyPilot Noticeboard</h2><p>Publish general announcements, exam reminders, maintenance notices, study tips and platform instructions.</p></div><button id="loadNotices" class="secondary">Refresh</button></div>
+    <div class="card"><h3>Create an announcement</h3>
+      <form id="noticeForm" class="form-grid">
+        <label>Title<input id="noticeTitle" required maxlength="160"></label>
+        <label>Category<select id="noticeCategory"><option value="announcement">General announcement</option><option value="exam_reminder">Exam reminder</option><option value="maintenance">Maintenance</option><option value="study_tip">Study tip</option><option value="platform_update">Platform update</option><option value="instruction">Instruction</option><option value="other">Other</option></select></label>
+        <label>Audience<select id="noticeLevel"><option value="all">All students</option><option value="O Level">O Level students</option><option value="A Level">A Level students</option></select></label>
+        <label>Subject (optional)<select id="noticeSubject"><option value="">All subjects / general</option></select></label>
+        <label class="full">Message<textarea id="noticeBody" rows="5" required maxlength="10000" placeholder="Write the announcement for students…"></textarea></label>
+        <button class="primary" type="submit">Publish notice</button>
+      </form><p id="noticeMessage" class="message"></p>
+    </div>
+    <div id="noticesList" class="stack">No notices loaded.</div>
+  </section>
+  <section class="panel" id="panel-users"><div class="section-head"><div><h2>Student accounts</h2><p>Account-level information only. Private planner notes and personal study content are not displayed.</p></div><button id="loadUsers" class="secondary">Refresh</button></div><div id="usersList" class="table-wrap">Load student accounts.</div></section>
+  <section class="panel" id="panel-feedback"><div class="section-head"><div><h2>Student feedback</h2><p>Review suggestions, complaints and feature requests.</p></div><button id="loadFeedback" class="secondary">Refresh</button></div><div id="feedbackList" class="stack">Load feedback.</div></section>
+  <section class="panel" id="panel-support"><div class="section-head"><div><h2>Support reports</h2><p>Investigate issues reported by students. Diagnostic details should never contain passwords or access tokens.</p></div><button id="loadSupport" class="secondary">Refresh</button></div><div id="supportList" class="stack">Load reports.</div></section>
+  <section class="panel" id="panel-resources"><div class="section-head"><div><h2>Learning resources</h2><p>Review the shared resource library. Existing student-facing resources remain available.</p></div><button id="loadResources" class="secondary">Refresh</button></div><div class="card"><h3>Add a learning resource</h3><form id="resourceForm" class="form-grid">
+<label>Title<input id="resourceTitle" required maxlength="180"></label>
+<label>Category<input id="resourceCategory" required maxlength="80" placeholder="Notes, video, past paper…"></label>
+<label>Academic level<input id="resourceLevel" maxlength="80" placeholder="O Level, A Level or All"></label>
+<label>Author / source<input id="resourceAuthor" maxlength="180"></label>
+<label>Resource link<input id="resourceUrl" type="url" required placeholder="https://…"></label>
+<label>DOI (optional)<input id="resourceDoi" maxlength="180"></label>
+<label class="full">Description<textarea id="resourceDescription" rows="3" maxlength="2000"></textarea></label>
+<button class="primary" type="submit">Add resource</button></form><p id="resourceMessage" class="message"></p></div><div id="resourcesList" class="table-wrap">Load resources.</div></section>
+  <section class="panel" id="panel-audit"><div class="section-head"><div><h2>Administrator audit log</h2><p>Records administrative activity and curriculum changes.</p></div><button id="loadAudit" class="secondary">Refresh</button></div><div id="auditList" class="table-wrap">Load audit records.</div></section>
+</section>
+</main>
+<footer>StudyPilot · Secure administration · Keep your administrator account private.</footer>
+</body></html>
